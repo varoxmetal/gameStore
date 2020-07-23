@@ -12,6 +12,7 @@
 
 ```shell
 $ npm install
+$ react-native link
 ```
 
 > Para ios
