@@ -10,7 +10,7 @@ class Api {
             method: 'GET',
         })
         .then( async ( query ) =>  await query.json ( ) )
-        .catch ( error => console.log ( 'error', error ) )
+        .catch ( error => { throw new Error (error.message ) } )
         return result.amiibo
     }
 }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { StatusBar, View, ActivityIndicator, FlatList } from 'react-native'
+import { StatusBar, View, ActivityIndicator, FlatList, Alert } from 'react-native'
 import { Container } from 'native-base'
 
 import API from '../../../utils/api'
@@ -32,6 +32,10 @@ class ProductList extends Component {
                 this.props.dispatch( { type: 'SET_PRODUCT_LIST', payload: { productList } } )
                 this.setState ( { loading: false } )
             })
+            .catch(error => { 
+                this.setState ( { loading: false } )
+                Alert.alert ( 'Error', error.message, [ {text: 'OK', onPress: () => console.log ( 'OK Pressed' ) }, ], { cancelable: true } )
+            })
         }
         else {
             this.setState ( { loading: false } )
@@ -51,7 +55,6 @@ class ProductList extends Component {
     }
 
     render () {
-        console.log('render', this.props)
         StatusBar.setBarStyle('light-content', true)
         return (
             <Container>

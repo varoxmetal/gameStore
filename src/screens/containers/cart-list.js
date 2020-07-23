@@ -63,7 +63,6 @@ class CartList extends Component {
     }
 
     render () {
-        console.log(this.props)
         return (
             <Container>
                 <Header title = 'Shopping cart' navigation = { this.props.navigation } showShoppingCart = { false } >
