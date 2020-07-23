@@ -20,15 +20,16 @@ class ProductList extends Component {
 
     async componentDidMount () {
         this.setState ( { loading: true } )
-        if (this.props.productListPrice === undefined) {
+        if (this.props.productList === undefined) {
             API.getProductList ( )
-            .then ( ( productList ) => { 
-                var productListPrice = []
-                productList.map( (product) => {  
+            .then ( ( fetchedProductList ) => { 
+                var productList = []
+                fetchedProductList.map( (product) => {  
+                    let id = `${product.head}${product.tail}` 
                     let price = Math.floor(Math.random() * 10000) + 25000 
-                    productListPrice.push ( { ...product, price: price } ) 
+                    productList.push ( { ...product, id, price: price } ) 
                 } )
-                this.props.dispatch( { type: 'SET_PRODUCT_LIST', payload: { productListPrice } } )
+                this.props.dispatch( { type: 'SET_PRODUCT_LIST', payload: { productList } } )
                 this.setState ( { loading: false } )
             })
         }
@@ -37,11 +38,10 @@ class ProductList extends Component {
         }
     }
 
-    keyExtractor = item => `${item.head.toString ()}${item.tail.toString ()}`
-    renderEmpty = () => <Empty text = "No se encontraron registros" />
+    keyExtractor = item => item.id.toString ()
+    renderEmpty = () => <Empty text = "No records were found" />
     productPress = ( item ) => { 
-        this.props.dispatch ( { type: 'ADD_PRODUCT', payload: { ...item } } )
-        //this.props.dispatch({ type: 'EMPTY_CART' })
+        this.props.dispatch ( { type: 'ADD_PRODUCT', payload: { ...item, quantity: 1 } } )
     }
 
     renderItem =  ( { item } ) => { 
@@ -51,16 +51,17 @@ class ProductList extends Component {
     }
 
     render () {
+        console.log('render', this.props)
         StatusBar.setBarStyle('light-content', true)
         return (
             <Container>
                 <StatusBar backgroundColor = "#0A74BC" barStyle = "light-content" /> 
-                <Header title = 'Lista de productos' navigation = { this.props.navigation } showShoppingCart = { true } /> 
+                <Header title = 'Product list' navigation = { this.props.navigation } showShoppingCart = { true } /> 
                 <View style={{ flex: 1, margin: 10 }}>
                     { this.state.loading ? 
                         <ActivityIndicator color = "#0098D0" size = "large" style = {{flex: 1, justifyContent: 'center', alignItems: 'center', height: 200}} />
                     : (
-                        <FlatList keyExtractor = { this.keyExtractor } data = { this.props.productListPrice } ListEmptyComponent = { this.renderEmpty } 
+                        <FlatList keyExtractor = { this.keyExtractor } data = { this.props.productList } ListEmptyComponent = { this.renderEmpty } 
                             renderItem = { this.renderItem } />) 
                     }
                 </View>
@@ -69,6 +70,6 @@ class ProductList extends Component {
     } 
 }
 
-function mapStateToProps ( state ) { return { productListPrice: state.productReducer.productListPrice, shoppingCart: state.shoppingCartReducer } }
+function mapStateToProps ( state ) { return { productList: state.shoppingCartReducer.productList, cartList: state.shoppingCartReducer.cartList } }
 
 export default connect ( mapStateToProps ) ( ProductList )

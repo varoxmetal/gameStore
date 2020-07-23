@@ -8,8 +8,7 @@ class Loading extends Component {
     }
   
     componentDidMount = () => {
-        setTimeout(() => {this.props.navigation.navigate ( 'ProductList' )}, 2000)
-        
+        this.props.navigation.navigate ( 'ProductList' )
     }
 
     render () {

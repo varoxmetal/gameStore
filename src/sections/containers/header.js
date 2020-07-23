@@ -6,11 +6,11 @@ import HeaderLayout from '../components/header-layout'
 class Header extends Component {
     render () {
         return (
-            <HeaderLayout shoppingCart = { this.props.shoppingCart } navigation = { this.props.navigation } children = { this.props.children } title = { this.props.title } showShoppingCart = { this.props.showShoppingCart } />
+            <HeaderLayout cartList = { this.props.cartList } navigation = { this.props.navigation } children = { this.props.children } title = { this.props.title } showShoppingCart = { this.props.showShoppingCart } />
         )
     }
 }
 
-function mapStateToProps ( state ) { return { shoppingCart: state.shoppingCartReducer } }
+function mapStateToProps ( state ) { return { cartList: state.shoppingCartReducer.cartList } }
 
 export default connect ( mapStateToProps ) ( Header )
